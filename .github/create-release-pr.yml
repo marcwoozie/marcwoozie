@@ -1,0 +1,43 @@
+name: Create Release PR
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  git-pr-release:
+    name: git-pr-release
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4
+
+      - name: Install git-pr-release
+        run: gem install --no-document git-pr-release -v '2.2.0'
+
+      - name: Create Release PR
+        run: git-pr-release
+        env:
+          GIT_PR_RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_PR_RELEASE_BRANCH_PRODUCTION: main
+          GIT_PR_RELEASE_BRANCH_STAGING: dev
+
+      - name: Set up GitHub CLI
+        uses: cli/gh-action@v2
+
+      - name: Get latest release PR URL
+        id: get_pr
+        run: |
+          PR_URL=$(gh pr list --state open --author "${{ github.actor }}" --json url,createdAt --jq 'sort_by(.createdAt) | reverse | .[0].url')
+          echo "url=$PR_URL" >> $GITHUB_OUTPUT
+
+      - name: Request reviewers
+        run: gh pr request-review --reviewer marcwoozie "${{ steps.get_pr.outputs.url }}"
