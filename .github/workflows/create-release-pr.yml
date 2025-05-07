@@ -42,4 +42,6 @@ jobs:
           echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
 
       - name: Request reviewers
-        run: gh pr edit ${{ steps.get_pr.outputs.pr_number }} --add-reviewer marcwoozie
+        run: |
+          gh pr edit ${{ steps.get_pr.outputs.pr_number }} --add-reviewer \
+            marcwoozie
