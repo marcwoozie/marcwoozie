@@ -35,11 +35,11 @@ jobs:
           GIT_PR_RELEASE_BRANCH_PRODUCTION: main
           GIT_PR_RELEASE_BRANCH_STAGING: dev
 
-      - name: Get latest release PR URL
+      - name: Get latest release PR number
         id: get_pr
         run: |
-          PR_URL=$(gh pr list --state open --author "${{ github.actor }}" --json url,createdAt --jq 'sort_by(.createdAt) | reverse | .[0].url')
-          echo "url=$PR_URL" >> $GITHUB_OUTPUT
+          PR_NUMBER=$(gh pr list --state open --author "${{ github.actor }}" --json number,createdAt --jq 'sort_by(.createdAt) | reverse | .[0].number')
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
 
       - name: Request reviewers
-        run: gh pr request-review --reviewers marcwoozie "${{ steps.get_pr.outputs.url }}"
+        run: gh pr request-review --repo marcwoozie/marcwoozie --reviewers marcwoozie ${{ steps.get_pr.outputs.pr_number }}
