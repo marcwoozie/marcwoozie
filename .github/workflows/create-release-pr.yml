@@ -22,10 +22,8 @@ jobs:
         with:
           ruby-version: 3.4
 
-      - name: Install gh CLI (quick)
-        run: |
-          curl -sSL https://github.com/cli/cli/releases/latest/download/gh_$(uname -s)_$(uname -m).tar.gz | tar -xz
-          sudo cp gh_*/bin/gh /usr/local/bin/
+      - name: Check gh version
+        run: gh --version
 
       - name: Install git-pr-release
         run: gem install --no-document git-pr-release -v '2.2.0'
