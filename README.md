@@ -3,4 +3,4 @@
 
 
 ## 🛠 Tech Stack
-[![My Skills](https://skillicons.dev/icons?i=php,ruby,ts,go,mysql,docker,aws&perline=10)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=php,ruby,js,ts,go,mysql,docker,aws&perline=10)](https://skillicons.dev)
